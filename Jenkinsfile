@@ -9,5 +9,13 @@ pipeline {
 		sh 'mvn clean verify sonar:sonar -Dsonar.projectKey=asgbuggywebapp2 -Dsonar.organization=asgbuggywebapp2 -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=2ba495e64e5be2e9801e950c45b2f9d522599cba'
 			}
         } 
+ 	
+	   stage('RunSCAAnalysisUsingSnyk') {
+            steps {		
+				withCredentials([string(credentialsId: 'SNYK_TOKEN', variable: 'SNYK_TOKEN')]) {
+					sh 'mvn snyk:test -fn'
+				}
+			}
+    }		
   }
 }
